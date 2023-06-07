@@ -3,7 +3,7 @@
 . ${BUILDPACK_TEST_RUNNER_HOME}/lib/test_utils.sh
 
 testCompile() {
-  loadFixture "Aptfile"
+  loadFixture "Aptfile-ci"
 
   compile
 
@@ -16,29 +16,29 @@ testCompile() {
 }
 
 testStackChange() {
-  loadFixture "Aptfile"
+  loadFixture "Aptfile-ci"
 
   #Set the cached STACK value to a non-existent stack, so it is guaranteed to change.
   mkdir -p "$CACHE_DIR/.apt/"
   echo "cedar-10" > "$CACHE_DIR/.apt/STACK"
-  
-  #Load the Aptfile into the cache, to exclusively test the stack changes
+
+  #Load the Aptfile-ci into the cache, to exclusively test the stack changes
   mkdir -p "$CACHE_DIR/apt/cache"
-  cp $BUILD_DIR/Aptfile "$CACHE_DIR/apt/cache"
+  cp $BUILD_DIR/Aptfile-ci "$CACHE_DIR/apt/cache"
 
   compile
 
   assertCapturedSuccess
 
-  assertCaptured "Detected Aptfile or Stack changes, flushing cache"
+  assertCaptured "Detected Aptfile-ci or Stack changes, flushing cache"
 }
 
 testStackNoChange() {
-  loadFixture "Aptfile"
+  loadFixture "Aptfile-ci"
 
-  #Load the Aptfile into the cache, to exclusively test the stack changes
+  #Load the Aptfile-ci into the cache, to exclusively test the stack changes
   mkdir -p "$CACHE_DIR/apt/cache"
-  cp $BUILD_DIR/Aptfile "$CACHE_DIR/apt/cache"
+  cp $BUILD_DIR/Aptfile-ci "$CACHE_DIR/apt/cache"
 
   compile
 
@@ -46,7 +46,7 @@ testStackNoChange() {
 }
 
 testStackCached() {
-  loadFixture "Aptfile"
+  loadFixture "Aptfile-ci"
 
   compile
   assertCapturedSuccess
