@@ -14,7 +14,7 @@
 
 ## 2024-03-28
 
-- Warn when Aptfile contains no packages ([#126](https://github.com/heroku/heroku-buildpack-apt/pull/126))
+- Warn when Aptfile-ci contains no packages ([#126](https://github.com/heroku/heroku-buildpack-apt/pull/126))
 - Support sources parts directory for Heroku-24 compatibility ([#119](https://github.com/heroku/heroku-buildpack-apt/pull/119))
 
 ## 2024-03-14
@@ -28,12 +28,12 @@
 
 ## 2021-03-10
 
-- Output a helpful error message when no `Aptfile` is found ([#87](https://github.com/heroku/heroku-buildpack-apt/pull/87)).
+- Output a helpful error message when no `Aptfile-ci` is found ([#87](https://github.com/heroku/heroku-buildpack-apt/pull/87)).
 
 ## 2021-01-15
 
 - Fail the build if `apt-get` or `curl` errors ([#79](https://github.com/heroku/heroku-buildpack-apt/pull/79)).
-- Only try to add custom repositories when some are defined in `Aptfile` ([#79](https://github.com/heroku/heroku-buildpack-apt/pull/79)).
+- Only try to add custom repositories when some are defined in `Aptfile-ci` ([#79](https://github.com/heroku/heroku-buildpack-apt/pull/79)).
 
 ## 2019-10-17
 
@@ -49,7 +49,7 @@
 
 ## 2019-06-10
 
-- Add support for comments in `Aptfile` ([#24](https://github.com/heroku/heroku-buildpack-apt/pull/24)).
+- Add support for comments in `Aptfile-ci` ([#24](https://github.com/heroku/heroku-buildpack-apt/pull/24)).
 
 ## 2017-09-13
 

@@ -29,10 +29,10 @@ function indent() {
   esac
 }
 
-if ! grep --invert-match -e "^\s*#" -e "^\s*$" -e "^:repo:" -q "${BUILD_DIR}/Aptfile"; then
+if ! grep --invert-match -e "^\s*#" -e "^\s*$" -e "^:repo:" -q "${BUILD_DIR}/Aptfile-ci"; then
   echo "
-!       You have no packages listed in your Aptfile. If you don't need custom APT packages,
-!       delete your Aptfile and remove the buildpack with:
+!       You have no packages listed in your Aptfile-ci. If you don't need custom APT packages,
+!       delete your Aptfile-ci and remove the buildpack with:
 !
 !       $ heroku buildpacks:remove heroku-community/apt
 "
@@ -69,24 +69,24 @@ case "$APT_VERSION" in
   *)         APT_FORCE_YES=("--allow-downgrades" "--allow-remove-essential" "--allow-change-held-packages");;
 esac
 
-if [[ -f "$APT_CACHE_DIR/Aptfile" ]] && cmp -s "$BUILD_DIR/Aptfile" "$APT_CACHE_DIR/Aptfile" && [[ "$CACHED_STACK" == "$STACK" ]] ; then
-  # Old Aptfile is the same as new and STACK has not changed
+if [[ -f "$APT_CACHE_DIR/Aptfile-ci" ]] && cmp -s "$BUILD_DIR/Aptfile-ci" "$APT_CACHE_DIR/Aptfile-ci" && [[ "$CACHED_STACK" == "$STACK" ]] ; then
+  # Old Aptfile-ci is the same as new and STACK has not changed
   topic "Reusing cache"
 else
-  # Aptfile changed or does not exist or STACK changed
-  topic "Detected Aptfile or Stack changes, flushing cache"
+  # Aptfile-ci changed or does not exist or STACK changed
+  topic "Detected Aptfile-ci or Stack changes, flushing cache"
   rm -rf "${CACHE_DIR}/apt"
   mkdir -p "$APT_CACHE_DIR/archives/partial"
   mkdir -p "$APT_STATE_DIR/lists/partial"
   mkdir -p "$APT_SOURCELIST_DIR"   # make dir for sources
-  cp -f "$BUILD_DIR/Aptfile" "$APT_CACHE_DIR/Aptfile"
+  cp -f "$BUILD_DIR/Aptfile-ci" "$APT_CACHE_DIR/Aptfile-ci"
   cat "/etc/apt/sources.list" > "$APT_SOURCES"    # no cp here
   cp -R "/etc/apt/sources.list.d" "$APT_SOURCEPARTS_DIR"
-  # add custom repositories from Aptfile to sources.list
+  # add custom repositories from Aptfile-ci to sources.list
   # like>>    :repo:deb http://cz.archive.ubuntu.com/ubuntu artful main universe
-  if grep -q -e "^:repo:" "$BUILD_DIR/Aptfile"; then
+  if grep -q -e "^:repo:" "$BUILD_DIR/Aptfile-ci"; then
     topic "Adding custom repositories"
-    grep -s -e "^:repo:" "$BUILD_DIR/Aptfile" | sed 's/^:repo:\(.*\)\s*$/\1/g' >> "$APT_SOURCES"
+    grep -s -e "^:repo:" "$BUILD_DIR/Aptfile-ci" | sed 's/^:repo:\(.*\)\s*$/\1/g' >> "$APT_SOURCES"
   fi
 fi
 
@@ -106,14 +106,14 @@ while IFS= read -r PACKAGE; do
     curl --silent --show-error --fail -L -z "$PACKAGE_FILE" -o "$PACKAGE_FILE" "$PACKAGE" 2>&1 | indent
   else
     topic "Fetching .debs for $PACKAGE"
-    # while this is not documented behavior, the Aptfile format technically
+    # while this is not documented behavior, the Aptfile-ci format technically
     # did allow for multiple packages separated by spaces to be specified
     # on a single line due to how the download command was implemented so we
     # should respect that behavior since users are doing this
     IFS=$' \t' read -ra PACKAGE_NAMES <<< "$PACKAGE"
     apt-get "${APT_OPTIONS[@]}" -y "${APT_FORCE_YES[@]}" -d install --reinstall "${PACKAGE_NAMES[@]}" | indent
   fi
-done < <(grep --invert-match -e "^\s*#" -e "^\s*$" -e "^:repo:" "${BUILD_DIR}/Aptfile")
+done < <(grep --invert-match -e "^\s*#" -e "^\s*$" -e "^:repo:" "${BUILD_DIR}/Aptfile-ci")
 
 mkdir -p "$BUILD_DIR/.apt"
 

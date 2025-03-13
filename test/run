@@ -45,7 +45,7 @@ testCacheInvalidation() {
 
   # Cold cache
   compile "package-names" "${bp_dir}" "${build_dir}" "${cache_dir}"
-  assertCaptured "Detected Aptfile or Stack changes, flushing cache"
+  assertCaptured "Detected Aptfile-ci or Stack changes, flushing cache"
   assertCapturedSuccess
 
   # Warm cache
@@ -56,13 +56,13 @@ testCacheInvalidation() {
   # Cache invalidated on stack change
   echo 'some-old-stack' > "${cache_dir}/.apt/STACK"
   compile "package-names" "${bp_dir}" "${build_dir}" "${cache_dir}"
-  assertCaptured "Detected Aptfile or Stack changes, flushing cache"
+  assertCaptured "Detected Aptfile-ci or Stack changes, flushing cache"
   assertCapturedSuccess
 
   # Cache invalidated if stack version file missing (eg cache from old buildpack version)
   rm "${cache_dir}/.apt/STACK"
   compile "package-names" "${bp_dir}" "${build_dir}" "${cache_dir}"
-  assertCaptured "Detected Aptfile or Stack changes, flushing cache"
+  assertCaptured "Detected Aptfile-ci or Stack changes, flushing cache"
   assertCapturedSuccess
 }
 
@@ -136,7 +136,7 @@ testReportCustomRepository() {
 
 testCompileEmpty() {
   compile "empty"
-  assertCaptured "You have no packages listed in your Aptfile"
+  assertCaptured "You have no packages listed in your Aptfile-ci"
   assertNotCaptured "Updating APT package index"
   assertCapturedSuccess
 }
@@ -151,7 +151,7 @@ testReportEmpty() {
 
 testCompileOnlyComments() {
   compile "only-comments"
-  assertCaptured "You have no packages listed in your Aptfile"
+  assertCaptured "You have no packages listed in your Aptfile-ci"
   assertNotCaptured "Updating APT package index"
   assertCapturedSuccess
 }
@@ -166,7 +166,7 @@ testReportOnlyComments() {
 
 testCompileCustomRepositoryNoPackages() {
   compile "custom-repository-no-packages"
-  assertCaptured "You have no packages listed in your Aptfile"
+  assertCaptured "You have no packages listed in your Aptfile-ci"
   assertNotCaptured "Updating APT package index"
   assertCapturedSuccess
 }
