@@ -85,7 +85,7 @@ else
   # Use us mirror for ubuntu.sources in sources.list.d
   topic "Modifying $APT_SOURCEPARTS_DIR/ubuntu.sources to use mirror instead of archive.ubuntu.com"
   sed -i 's|http://archive.ubuntu.com/ubuntu/|https://us.archive.ubuntu.com/ubuntu/|g' "$APT_SOURCEPARTS_DIR/ubuntu.sources"
-  sed -i 's|http://security.ubuntu.com/ubuntu/|https://security.ubuntu.com/ubuntu/|g' "$APT_SOURCEPARTS_DIR/ubuntu.sources"
+  sed -i 's|http://security.ubuntu.com/ubuntu/|https://mirror.enzu.com/ubuntu/|g' "$APT_SOURCEPARTS_DIR/ubuntu.sources"
   # add custom repositories from Aptfile-ci to sources.list
   # like>>    :repo:deb http://cz.archive.ubuntu.com/ubuntu artful main universe
   if grep -q -e "^:repo:" "$BUILD_DIR/Aptfile-ci"; then
